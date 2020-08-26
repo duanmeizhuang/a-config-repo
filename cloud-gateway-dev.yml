@@ -1,0 +1,45 @@
+spring:
+  security:
+    basic:
+      enable: false
+    oauth2:
+      client:
+        registration:
+          login-client:
+            provider: uaa
+            client-id: login-client
+            client-secret: secret
+            authorization-grant-type: authorization_code
+            redirect-uri-template: "{baseUrl}/login/oauth2/code/{registrationId}"
+            scope: openid,profile,email,resource.read
+        provider:
+          uaa:
+            authorization-uri: http://uaaserver:9999/uaa/oauth/authorize
+            token-uri: http://uaaserver:9999/uaa/oauth/token
+            user-info-uri: http://uaaserver:9999/uaa/api/account
+            user-name-attribute: user_name
+            jwk-set-uri: http://uaa/uaa/oauth/token_key
+  redis:
+    host: 192.168.8.123
+    port: 6379
+  zipkin: # Use the "zipkin" Maven profile to have the Spring Cloud Zipkin dependencies
+    base-url: http://192.168.8.121:9411
+    enabled: true
+    locator:
+      discovery:
+        enabled: true
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://admin:admin@eureka:9200/eureka/
+
+
+
+logging:
+  level:
+    root: INFO
+    org.springframework.web: INFO
+    org.springframework.security: INFO
+    org.springframework.security.oauth2: DEBUG
+    org.springframework.cloud.gateway: TRACE
+    org.springframework.boot.autoconfigure: DEBUG
